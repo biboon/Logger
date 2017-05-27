@@ -4,7 +4,7 @@ TARGET := runner
 SOURCES := main.c log.c
 OBJECTS := $(SOURCES:.c=.o)
 
-CFLAGS := -g -Wall -Wextra -std=c99 -D_DEFAULT_SOURCE -D_LOG_MIN_ALL
+CFLAGS := -g -Wall -Wextra -std=c99 -D_DEFAULT_SOURCE -D_LOG_ALL
 LIB :=
 LDFLAGS :=
 
