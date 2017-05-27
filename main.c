@@ -2,6 +2,7 @@
 
 int main(int argc, char *argv[])
 {
+	log_all("all");
 	log_trace("trace");
 	log_debug("debug");
 	log_info("info");
