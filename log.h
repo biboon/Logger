@@ -23,9 +23,9 @@
 #define LOG_LEVEL 2
 #endif
 
-#define LOG_PREFIX_ALL   "[" "\x1B[30m" "  all" "\x1B[0m" "] "
-#define LOG_PREFIX_TRACE "[" "\x1B[37m" "trace" "\x1B[0m" "] "
-#define LOG_PREFIX_DEBUG "[" "\x1B[36m" "debug" "\x1B[0m" "] "
+#define LOG_PREFIX_ALL   "[" "\x1B[37m" "  all" "\x1B[0m" "] "
+#define LOG_PREFIX_TRACE "[" "\x1B[36m" "trace" "\x1B[0m" "] "
+#define LOG_PREFIX_DEBUG "[" "\x1B[34m" "debug" "\x1B[0m" "] "
 #define LOG_PREFIX_INFO  "[" "\x1B[32m" " info" "\x1B[0m" "] "
 #define LOG_PREFIX_WARN  "[" "\x1B[33m" " warn" "\x1B[0m" "] "
 #define LOG_PREFIX_ERROR "[" "\x1B[31m" "error" "\x1B[0m" "] "
