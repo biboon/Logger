@@ -2,6 +2,7 @@
 
 int main(int argc, char *argv[])
 {
+	log_start(NULL);
 	log_all("all");
 	log_trace("trace");
 	log_debug("debug");
@@ -10,5 +11,6 @@ int main(int argc, char *argv[])
 	log_error("error");
 	log_perror("perror");
 	log_fatal("fatal");
+	log_end();
 	return 0;
 }
