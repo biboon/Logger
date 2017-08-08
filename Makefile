@@ -1,19 +1,23 @@
-CC := x86_64-w64-mingw32-gcc
 CC := gcc
 TARGET := runner
 
 SOURCES := main.c log.c
 OBJECTS := $(SOURCES:.c=.o)
 
-CFLAGS := -g -Wall -Wextra -std=c99 -D_DEFAULT_SOURCE
+CFLAGS := -g -std=c99 -pedantic
+CFLAGS += -Wall -Wextra
+CFLAGS += -Wshadow -Wpointer-arith -Wconversion
+CFLAGS += -Wcast-qual -Wcast-align
+CFLAGS += -Wstrict-prototypes -Wmissing-prototypes
+CFLAGS += -D_DEFAULT_SOURCE -D_LOG_LEVEL=LOG_ALL
 LIB :=
 LDFLAGS :=
 
 $(TARGET): $(OBJECTS)
-	$(CC) $^ -o $@ $(LIB)
+	$(CC) $(LDFLAGS) $^ -o $@ $(LIB)
 
 %.o: %.c
-	$(CC) $(CFLAGS) $(LDFLAGS) -c -o $@ $<
+	$(CC) $(CFLAGS) -c -o $@ $<
 
 clean:
 	rm -rf $(TARGET) $(OBJECTS)
