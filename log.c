@@ -4,14 +4,7 @@
 #include <stdarg.h>
 #include <time.h>
 
-#ifdef __GNUC__
-#define likely(x)       __builtin_expect(!!(x), 1)
-#define unlikely(x)     __builtin_expect(!!(x), 0)
-#else
-#define likely(x)       (x)
-#define unlikely(x)     (x)
-#endif
-
+#ifndef _LOG_DISABLE
 
 static const char * const level_str[] = {
 #ifndef _LOG_NO_COLOR
@@ -33,6 +26,7 @@ static const char * const level_str[] = {
 #endif
 };
 
+static const enum log_level threshold = _LOG_LEVEL;
 static FILE *output;
 
 
@@ -47,18 +41,21 @@ int log_end(void)
 	return output != NULL ? fclose(output) : 0;
 }
 
-
-void log_(int level, const char * restrict fmt, ...)
+void log_(enum log_level level, const char * restrict fmt, ...)
 {
+	if (level < threshold) return;
+
 	char date[18], msg[160];
 	time_t tloc = time(NULL);
 	struct tm *time_info = localtime(&tloc);
-	if (unlikely(strftime(date, sizeof date, "%y-%m-%d %H:%M:%S", time_info) == 0))
-		return;
+	strftime(date, sizeof date, "%y-%m-%d %H:%M:%S", time_info);
+
 	va_list arg;
 	va_start(arg, fmt);
-	if (unlikely(vsnprintf(msg, sizeof msg, fmt, arg) < 0))
-		return;
+	vsnprintf(msg, sizeof msg, fmt, arg);
 	va_end(arg);
+
 	fprintf(output, "(%17s %s) %s\n", date, level_str[level], msg);
 }
+
+#endif /* _LOG_DISABLE */

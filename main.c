@@ -20,6 +20,7 @@ static void bench(unsigned loops)
 
 	printf("Time elapsed: %.6f seconds\n", (float)micros / 1e6);
 	printf("Logs per second: %.6f\n", (float)loops * 1e6 / (float)micros);
+	printf("Time per log: %.6f us\n", (float)micros / (float)loops);
 }
 
 
@@ -38,11 +39,12 @@ int main(int argc, char *argv[])
 	log_info("info");
 	log_warn("warn");
 	log_error("error");
+	log_perror("perror");
 	log_fatal("fatal");
 
 	bench((unsigned) strtoul(argv[1], NULL, 0));
 
 	log_end();
-	
+
 	return 0;
 }
