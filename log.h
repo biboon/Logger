@@ -1,9 +1,14 @@
 #ifndef __LOG_H
 #define __LOG_H
-#ifndef _LOG_DISABLE
 
 #include <string.h>
 #include <errno.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+#ifndef _LOG_DISABLE
 
 enum log_level {
 	LOG_ALL, LOG_TRACE, LOG_DEBUG, LOG_INFO, LOG_WARN, LOG_ERROR, LOG_FATAL
@@ -20,17 +25,11 @@ enum log_level {
 #define log_warn(...)   log_(LOG_WARN, __VA_ARGS__)
 #define log_error(...)  log_(LOG_ERROR, __VA_ARGS__)
 #define log_fatal(...)  log_(LOG_FATAL, __VA_ARGS__)
-#define log_perror(fmt) log_(LOG_ERROR, fmt ": %s", strerror(errno))
+#define log_perror(str) log_(LOG_ERROR, str ": %s", strerror(errno))
 
-#ifdef __cplusplus
-extern "C" {
-#endif
 int log_start(const char *filepath);
-int log_end(void);
 void log_(enum log_level level, const char * restrict fmt, ...);
-#ifdef __cplusplus
-}
-#endif
+void log_end(void);
 
 #else
 
@@ -41,10 +40,16 @@ void log_(enum log_level level, const char * restrict fmt, ...);
 #define log_warn(...)   (void) 0
 #define log_error(...)  (void) 0
 #define log_fatal(...)  (void) 0
-#define log_perror(fmt) (void) 0
-#define log_start(...)  (void) 0
-#define log_end(...)    (void) 0
-#define log_(...)       (void) 0
+#define log_perror(str) (void) 0
+
+int log_start(const char *filepath);
+#define log_(level, fmt, ...) (void) 0
+#define log_end() (void) 0
 
 #endif /* _LOG_DISABLE */
+
+#ifdef __cplusplus
+}
+#endif
+
 #endif /* __LOG_H */

@@ -1,10 +1,11 @@
 #include "log.h"
 
+#ifndef _LOG_DISABLE
+
 #include <stdio.h>
 #include <stdarg.h>
 #include <time.h>
 
-#ifndef _LOG_DISABLE
 
 static const char * const level_str[] = {
 #ifndef _LOG_NO_COLOR
@@ -36,11 +37,6 @@ int log_start(const char *filepath)
 	return output != NULL ? 0 : -1;
 }
 
-int log_end(void)
-{
-	return output != NULL ? fclose(output) : 0;
-}
-
 void log_(enum log_level level, const char * restrict fmt, ...)
 {
 	if (level < threshold) return;
@@ -56,6 +52,19 @@ void log_(enum log_level level, const char * restrict fmt, ...)
 	va_end(arg);
 
 	fprintf(output, "(%17s %s) %s\n", date, level_str[level], msg);
+}
+
+void log_end(void)
+{
+	if (output != NULL && output != stdout) fclose(output);
+}
+
+#else
+
+int log_start(const char *filepath)
+{
+	(void) filepath;
+	return 0;
 }
 
 #endif /* _LOG_DISABLE */

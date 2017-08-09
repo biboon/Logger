@@ -26,12 +26,13 @@ static void bench(unsigned loops)
 
 int main(int argc, char *argv[])
 {
-	if (argc < 2)
+	if (argc < 2) {
 		return -1;
-	else if (argc < 3)
-		log_start(NULL);
-	else
-		log_start(argv[2]);
+	} else if (argc < 3) {
+		if (log_start(NULL) != 0) return -1;
+	} else {
+		if (log_start(argv[2]) != 0) return -1;
+	}
 
 	log_all("all");
 	log_trace("trace");
