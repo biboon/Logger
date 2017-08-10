@@ -27,7 +27,6 @@ static const char * const level_str[] = {
 #endif
 };
 
-static const enum log_level threshold = _LOG_LEVEL;
 static FILE *output;
 
 
@@ -39,7 +38,7 @@ int log_start(const char *filepath)
 
 void log_(enum log_level level, const char * restrict fmt, ...)
 {
-	if (level < threshold) return;
+	if (level < _LOG_LEVEL) return;
 
 	char date[18], msg[160];
 	time_t tloc = time(NULL);
