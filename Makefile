@@ -1,23 +1,37 @@
-CC := gcc
-TARGET := runner
+CC       := gcc
+DIRBIN   := bin
+DIRBUILD := build
 
-SOURCES := main.c log.c
-OBJECTS := $(SOURCES:.c=.o)
+CSRCS    := $(shell find src -name "*.c")
+COBJS    := $(patsubst src/%.c,$(DIRBUILD)/%.o,$(CSRCS))
 
-CFLAGS := -g -std=c99 -pedantic
-CFLAGS += -Wall -Wextra
-CFLAGS += -Wshadow -Wpointer-arith -Wconversion
-CFLAGS += -Wcast-qual -Wcast-align
-CFLAGS += -Wstrict-prototypes -Wmissing-prototypes
-CFLAGS += -D_DEFAULT_SOURCE -D_LOG_LEVEL=LOG_ALL
-LIB :=
-LDFLAGS :=
+### Compilation options
+CFLAGS   := -std=c99 -Wall
+CFLAGS   += -Wshadow -Wpointer-arith -Wvla -Wdeclaration-after-statement
+CFLAGS   += -Wcast-align -Wstrict-prototypes -Wmissing-prototypes
+# CFLAGS   += -Wextra -Wconversion -Wcast-qual
 
-$(TARGET): $(OBJECTS)
-	$(CC) $(LDFLAGS) $^ -o $@ $(LIB)
 
-%.o: %.c
-	$(CC) $(CFLAGS) -c -o $@ $<
+CFLAGS   += -Iinclude
+LDFLAGS  +=
+LIB      +=
+
+CFLAGS   += -D_DEFAULT_SOURCE -g3 -D_LOG_LEVEL=LOG_TRACE # -O2
+
+
+.PHONY: logger
+
+logger: $(COBJS)
+	@mkdir -p $(DIRBIN)
+	$(CC) $(LDFLAGS) -o $(DIRBIN)/$@ $^ $(LIB)
 
 clean:
-	rm -rf $(TARGET) $(OBJECTS)
+	rm -rf build
+
+cleanall:
+	rm -rf build bin
+
+
+$(DIRBUILD)/%.o: src/%.c
+	@mkdir -p $(@D)
+	$(CC) $(CFLAGS) -c -o $@ $<

@@ -1,3 +1,4 @@
 # Logger
 
-This is the repository for my personnal logging library. The code may evolve in the future depending on my needs.
+Logger is a logging library with a very easy to use ISO C99 compliant interface. 
+
